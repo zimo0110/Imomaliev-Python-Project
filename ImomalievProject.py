@@ -3,23 +3,18 @@ import pygame
 import os
 import random
 
-#initialise pygame 
-pygame.mixer.init()
-pygame.font.init()
-pygame.init()
-pygame.display.set_caption('Space Shooters by Zoir')
-WIN = pygame.display.set_mode((Game.get_screen_wid(), Game.get_screen_hei()))
+
 
 #game class, the base of the game
 class Game():
 
     #initialise the Game's attributes
-    def ___init__(self):
+    def __init__(self):
 
         #parameters of the screen
-        self.WIDTH = 700
-        self.HEIGHT = 500
-        self.FPS = 600
+        self.WIDTH = WIDTH
+        self.HEIGHT = HEIGHT
+        self.FPS = 60
 
         #mechanics of the game
         self.player_VEL = 5
@@ -61,12 +56,8 @@ class Game():
         self.BULL_VEL = 7
         self.MAX_BULL = 3
 
-    #initialise pygame 
-    pygame.mixer.init()
-    pygame.font.init()
-    pygame.init()
-    pygame.display.set_caption('Space Shooters by Zoir')
-    WIN = pygame.display.set_mode(self.WIDTH, self.HEIGHT)
+    #end constructor
+
     #get the image of the player spaceship
     def get_player_img(self):
 
@@ -95,25 +86,37 @@ class Game():
     #get the screen height
     def get_screen_hei(self):
 
-        return self.HEIGHT 
+        return self.HEIGHT
+    
+    #return the type of the font
+    def get_healthFont(self):
+
+        return self.HEALTH_FONT
         
     #main function
-    def main(self):
+    def game1(self):
 
-        #game details
+        #game loop
         clock = pygame.time.Clock()
         run = True
-        FPS = self.FPS
 
         bullets = []
-        lives = self.Lives
+        #lives = self.player_Lives
 
-        pass
+        while run :
+            clock.tick(self.FPS)
+
+            for event in pygame.event.get():
+
+                if event.type == pygame.QUIT:
+                    run = False
+                    pygame.quit()
 
 #class of the user
 class Player(pygame.sprite.Sprite):
 
     def __init__(self, width,height,x,y):
+
         super().__init__()
         self.image = Game.get_player_img()
         self.rect = self.image.get_rect()
@@ -123,6 +126,14 @@ class Player(pygame.sprite.Sprite):
         self.width = width
         self.speed = 5
         self.lives  = 5
+
+        #colours that will be used in my game
+        self.end = False
+        self.BLACK = (0,0,0)
+        self.WHITE = (255,255,255)
+        self.BLUE = (50,50,255)
+        self.YELLOW = (255,255,0)
+        self.RED = (255,0,0)
     
     def movement(self, keys_pressed):
         if keys_pressed[pygame.K_a] and self.rect.x > 0:
@@ -145,8 +156,9 @@ class Player(pygame.sprite.Sprite):
                 self.lives -= 1    
 
     def scoreP(self):
-        draw_text = HEALTH_FONT.render("Health :" + str(self.lives), 1, WHITE)
-        winner_text = HEALTH_FONT.render("YOU LOST", 1, WHITE)
+        #update the score of the player
+        draw_text = (Game.get_healthFont()).render("Health :" + str(self.lives), 1, self.WHITE)
+        winner_text = (Game.get_healthFont()).render("YOU LOST", 1, self.WHITE)
         WIN.blit(draw_text ,(draw_text.get_width()//2 - 20, 0 + draw_text.get_height()//2))
         if self.lives == 0:
             WIN.blit(winner_text ,(winner_text.get_width()//2 - 20, 30 + winner_text.get_height()//2))
@@ -154,3 +166,15 @@ class Player(pygame.sprite.Sprite):
         else:
             pygame.display.update()
             pygame.time.delay(5000)
+
+if __name__ == '__main__':
+    #initialise pygame 
+    pygame.mixer.init()
+    pygame.font.init()
+    pygame.init()
+    pygame.display.set_caption('Space Shooters by Zoir')
+    WIDTH, HEIGHT = 700, 500
+    SIZE = (WIDTH, HEIGHT)
+    WIN = pygame.display.set_mode(SIZE)
+    main_game = Game()
+    main_game.game1()
