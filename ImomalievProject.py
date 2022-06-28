@@ -2,8 +2,8 @@
 import pygame
 import os
 import random
-
-
+from improve_space import BORDER, SPACE_BG
+import sys
 
 #game class, the base of the game
 class Game():
@@ -49,8 +49,12 @@ class Game():
         self.PLAYER_HIT = pygame.USEREVENT + 1
         self.ENEMY_HIT = pygame.USEREVENT + 2
 
+        #player and enemy
+
+
         #background
         self.Background = pygame.transform.scale(pygame.image.load(os.path.join('resourcesExtra','space.png')),(self.WIDTH, self.HEIGHT))
+        self.Border = pygame.Rect(10, 0, 10, HEIGHT)
 
         #bullet parameters
         self.BULL_VEL = 7
@@ -110,7 +114,16 @@ class Game():
 
                 if event.type == pygame.QUIT:
                     run = False
-                    pygame.quit()
+                    sys.exit()
+                    
+            self.draw()
+
+    def draw(self):
+        #bg and border
+        global WIN
+        WIN.blit(self.Background,(0,0))
+        pygame.draw.rect(WIN, self.BLACK, self.Border)
+
 
 #class of the user
 class Player(pygame.sprite.Sprite):
@@ -168,12 +181,13 @@ class Player(pygame.sprite.Sprite):
             pygame.time.delay(5000)
 
 if __name__ == '__main__':
+
     #initialise pygame 
     pygame.mixer.init()
     pygame.font.init()
     pygame.init()
     pygame.display.set_caption('Space Shooters by Zoir')
-    WIDTH, HEIGHT = 700, 500
+    WIDTH, HEIGHT = 710, 500
     SIZE = (WIDTH, HEIGHT)
     WIN = pygame.display.set_mode(SIZE)
     main_game = Game()

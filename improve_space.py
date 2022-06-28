@@ -1,6 +1,8 @@
+from re import L
 import pygame
 import os
 import random
+import threading
 print(9 % 11)
 
 pygame.mixer.init()
@@ -18,7 +20,7 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Dodgy Star Game by ZOIR")
 
 BORDER = pygame.Rect(WIDTH//2 -5, 0, 10, HEIGHT)
-
+print(f'Border width {BORDER.width} , Height {BORDER.height}')
 HEALTH_FONT = pygame.font.SysFont('Aharoni', 40)
 WINNER_FONT = pygame.font.SysFont('Biome', 80)
 
@@ -71,6 +73,12 @@ def main():
                 if event.key == pygame.K_LCTRL and len(Ybullets) < MAX_BULL:
                     bullet = pygame.Rect(yellow.x + yellow.width, yellow.y + yellow.height//2 - 2, 10,5)
                     Ybullets.append(bullet)
+                    BULLET_FSOUND.play()
+
+                t1 = threading.Thread(target=enemy_fire).start()
+                if enemy_fire():
+                    bullet = pygame.Rect(red.x + red.width, red.y + red.height//2 -2, 10, 5)
+                    Rbullets.append(bullet)
                     BULLET_FSOUND.play()
 
             if event.type == RED_HIT:
@@ -132,17 +140,27 @@ def yellow_handle_movement(keys_pressed, yellow):
 
 def red_handle_movement(red, Ybullets, yellow):
     for bullet in Ybullets:
+
         if (red.x - bullet.x) <= 80 and ((red.y - bullet.y) <= 40 or (bullet.y - red.y) <= 40):
             #print('condition passed')
 
-            if bullet.y < red.y and red.y + red.height < HEIGHT and red.y - bullet.y <= 40:
+            if red.y == 0 or red.y >= HEIGHT:
+                red.y = random.randint(10,HEIGHT - 20)
+                red.x = random.randint(500,800)
+
+            #bullet is above
+            elif bullet.y < red.y and red.y + red.height < HEIGHT and red.y - bullet.y <= 40:
                 red.y += 15
                 print("situation 1")
+            
+            #bullet is below
             elif bullet.y > red.y and red.y != 0:
                 while  bullet.y - red.y <= 50 and red.y>=5:
                         red.y -= 5
                         print("situation 2")
                         print(red.y)
+                
+            #bullet is on the same level
             elif red.y == 0 and yellow.y == red.y:
                     if bullet.y > HEIGHT/2 :
                         print("situation 3")
@@ -150,7 +168,16 @@ def red_handle_movement(red, Ybullets, yellow):
                     elif bullet.y < HEIGHT/2:
                         print("situation 4")
                         red.y +=15
-            
+
+def enemy_fire():
+    x = random.randint(0,1)
+    if x == 0:
+        return True
+    else:
+        return False
+
+
+
 def handle_bullets(Ybullets, Rbullets, red, yellow):
     for bullet in Ybullets:
         bullet.x += BULL_VEL
@@ -177,4 +204,3 @@ def draw_winner(text):
 if __name__ == "__main__":
     main()
 
-print(9 % 11)
