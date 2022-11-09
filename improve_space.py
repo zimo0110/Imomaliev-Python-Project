@@ -169,13 +169,13 @@ def red_handle_movement(red, Ybullets, yellow):
                         print("situation 4")
                         red.y +=15
 
+
 def enemy_fire():
     x = random.randint(0,1)
     if x == 0:
         return True
     else:
         return False
-
 
 
 def handle_bullets(Ybullets, Rbullets, red, yellow):
