@@ -1,6 +1,6 @@
 #imports
 import pygame
-from helper import import_folder as lol
+from helperGame import import_folder as lol
 import os
 #imports
 

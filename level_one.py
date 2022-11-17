@@ -3,6 +3,7 @@ import pygame
 from tile import Tile
 from parameters import tileDim, scr_width, scr_height
 from player import Player
+from target import Target
 #imports
 
 
@@ -15,12 +16,14 @@ class Level:
         self.world_shift = 0
         self.tempx = 0
         self.dead = dd
+        self.score = 0
 
     #draw the map arrangement
     def setup(self, layout):
 
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
+        self.target = pygame.sprite.Group()
 
         for row_index,row in enumerate(layout):
             for col_index, cell in enumerate(row):
@@ -38,6 +41,11 @@ class Level:
 
                     player = Player((x,y))
                     self.player.add(player)
+
+                elif cell == 'T':
+                    target = Target((x,y),tileDim)
+                    self.target.add(target)
+                    
 
     #camera of the game
     def scroll_x(self):
@@ -64,7 +72,8 @@ class Level:
         #mechanics
         player = self.player.sprite
         player.rect.x += player.direction.x * player.speed
-
+        #target = self.target.sprite
+    
         #collision
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(player.rect): #use 'rect' instead of 'sprite' to get hold of rectangle info of tiles and the player
@@ -82,13 +91,21 @@ class Level:
             player.lwall = False
         if player.rwall and (player.rect.right > self.tempx or player.direction.x <= 0):
             player.rwall = False
-    
-            
+
+        #target collision
+        for target in self.target.sprites():
+            if target.rect.colliderect(player.rect): #player vs target
+                self.score += 1
+                print(self.score)
+                                                 
+        
     def vertical_collision(self):
         #mechanics
         player = self.player.sprite
         player.player_gravity()
 
+    
+        
         #collision
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(player.rect): #use 'rect' instead of 'sprite' to get hold of rectangle info of tiles and the player
@@ -108,17 +125,31 @@ class Level:
         if player.ceiling and player.direction.y > 0 :
             player.ceiling = False
 
+        
     def player_death(self):
         player = self.player.sprite
         y = player.rect.bottom
 
         if y >= scr_height:
-            print('player dead')
+            #print('player dead')
             pygame.event.post(pygame.event.Event(self.dead))
+
+
+    def show_score(self):
+
+        black = (0,0,0)
+
+        #define fonts
+        self.font = pygame.font.SysFont("arialblack", 35)
+        score_text = self.font.render("Score: "+str(self.score), True, black)
+        scoreRect = score_text.get_rect()
+        self.display_surf.blit(score_text, scoreRect)
+        #self.score += 1
+
 
     #public procedure
     def run(self):
-
+        
         #all tiles
         self.tiles.update(self.world_shift)
         self.tiles.draw(self.display_surf)
@@ -130,4 +161,14 @@ class Level:
         self.vertical_collision()
         self.player_death()
         self.player.draw(self.display_surf)
+
+        #target
+        #self.target.update()
+        self.target.update(self.world_shift)
+        self.target.draw(self.display_surf)
+
+        #score
+        self.show_score()
+
+    
         

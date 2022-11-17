@@ -1,22 +1,19 @@
-#imports
-import os  #utilising the walk function of os
-import pygame
+import matplotlib.pyplot as plt
+from IPython import display
 
-#function to import images for animations
-def import_folder(path):
-    
-    surface_list = []
+plt.ion()
 
-    #the folder must only contain images, as any other format file will cause an import error
-    folder = os.walk(path)
-
-    for a,b, imgs in folder:
-        
-        #loop through the imgs
-        for img in imgs:
-            
-            full_path = path + '/' + img 
-            surface = (pygame.image.load(full_path)).convert_alpha() #to handle png images with transparent background
-            surface_list.append(surface) 
-
-    return surface_list
+def plot(scores, mean_scores):
+    display.clear_output(wait=True)
+    display.display(plt.gcf())
+    plt.clf()
+    plt.title('Training...')
+    plt.xlabel('Number of Games')
+    plt.ylabel('Score')
+    plt.plot(scores)
+    plt.plot(mean_scores)
+    plt.ylim(ymin=0)
+    plt.text(len(scores)-1, scores[-1], str(scores[-1]))
+    plt.text(len(mean_scores)-1, mean_scores[-1], str(mean_scores[-1]))
+    plt.show(block=False)
+    plt.pause(.1)

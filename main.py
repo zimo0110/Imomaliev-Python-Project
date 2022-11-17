@@ -19,6 +19,9 @@ DEAD = pygame.USEREVENT + 1
 level_one = Level(levOne_map, screen, DEAD)
 test = pygame.sprite.Group(Tile((100,100),200))
 
+#Game constants
+score = 0
+
 #Game Pause
 game_paused = False
 menu_state = "main"
@@ -31,6 +34,7 @@ TEXT_COL = (255, 255, 255)
 font = pygame.font.SysFont("arialblack", 40)
 
 #load button images
+size_img = (400,200)
 resume_img = pygame.image.load("graphics/buttonimages/button_resume.png").convert_alpha()
 options_img = pygame.image.load("graphics/buttonimages/button_options.png").convert_alpha()
 quit_img = pygame.image.load("graphics/buttonimages/button_quit.png").convert_alpha()
@@ -38,6 +42,8 @@ video_img = pygame.image.load('graphics/buttonimages/button_video.png').convert_
 audio_img = pygame.image.load('graphics/buttonimages/button_audio.png').convert_alpha()
 keys_img = pygame.image.load('graphics/buttonimages/button_keys.png').convert_alpha()
 back_img = pygame.image.load('graphics/buttonimages/button_back.png').convert_alpha()
+endgame_img = pygame.transform.scale(pygame.image.load("graphics/buttonimages/endgame.png").convert_alpha(), size_img)
+
 
 #create button instances
 resume_button = button.Button(scr_width//2-90, scr_height//4, resume_img, 1)
@@ -49,14 +55,18 @@ audio_button = button.Button(scr_width//2-120, scr_height//5+150, audio_img, 1)
 keys_button = button.Button(scr_width//2-120, scr_height//5+300, keys_img, 1)
 back_button = button.Button(scr_width//2-120, scr_height//5+450, back_img, 1)
 
+endgame_button = button.Button(scr_width//2-180, scr_height//4 + 120, endgame_img, 1)
+
+
 #menu drawer
 def draw_text(text, font, text_col, x, y):
   img = font.render(text, True, text_col)
   screen.blit(img, (x, y))
 
+
 #main loop
 while run:
-	
+
     #basic background filled
 	screen.fill('white')
 
@@ -86,10 +96,19 @@ while run:
 				print("Change Key Bindings")
 			if back_button.draw(screen):
 				menu_state = "main"
+		
+		#if player died
+		if menu_state == "over":
+
+			#draw different option buttons
+			if endgame_button.draw(screen):
+				print('Game Over')
+				run = False
+			
 	else:
 		#load level one
 		level_one.run()
-
+		
 
 	#main event checker
 	for event in pygame.event.get():
@@ -103,9 +122,10 @@ while run:
 			sys.exit()
 
 		if event.type == DEAD:
-			pygame.quit()
-			sys.exit()
-
+		
+			menu_state = "over"
+			game_paused = True
+			print('dead screen')
 	
     #refreshes the screen at 60 fps
 	pygame.display.update()
