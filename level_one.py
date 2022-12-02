@@ -23,7 +23,7 @@ class Level:
 
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
-        self.target = pygame.sprite.Group()
+        self.target = pygame.sprite.GroupSingle()
 
         for row_index,row in enumerate(layout):
             for col_index, cell in enumerate(row):
@@ -144,7 +144,7 @@ class Level:
         score_text = self.font.render("Score: "+str(self.score), True, black)
         scoreRect = score_text.get_rect()
         self.display_surf.blit(score_text, scoreRect)
-        #self.score += 1
+        
 
 
     #public procedure
@@ -153,6 +153,12 @@ class Level:
         #all tiles
         self.tiles.update(self.world_shift)
         self.tiles.draw(self.display_surf)
+
+        #target
+        self.target.update(self.world_shift)
+        self.target.draw(self.display_surf)
+
+        #scroll
         self.scroll_x()
 
         #player
@@ -161,11 +167,6 @@ class Level:
         self.vertical_collision()
         self.player_death()
         self.player.draw(self.display_surf)
-
-        #target
-        #self.target.update()
-        self.target.update(self.world_shift)
-        self.target.draw(self.display_surf)
 
         #score
         self.show_score()

@@ -6,7 +6,7 @@ levOne_map = [
 ' XX    XX             XX    XX    ',
 ' XX P      X      XX              ',
 ' XXXX         XX         XX       ',
-' XXXX  T    XX      X      XX     ',
+' XXXX       XX      X      XX     ',
 ' XX    X  XXX     XX   X    XX    ',
 '       X  XXXX    XX  XXX   XXX  X',
 '   XXXX   XXXXX  XX  XXX    XXX   ',
