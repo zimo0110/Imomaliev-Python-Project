@@ -1,7 +1,7 @@
 from helperGame import vertical_tile_number, tile_size, screen_width
 import pygame
 from tile import AnimatedTile, StaticTile
-from support import import_folder
+from helperGame import import_folder
 from random import choice, randint
 
 class Sky:

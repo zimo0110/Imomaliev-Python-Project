@@ -1,6 +1,6 @@
 import pygame 
 from game_data import levels
-from support import import_folder
+from helperGame import import_folder
 from decoration import Sky
 
 class Node(pygame.sprite.Sprite):

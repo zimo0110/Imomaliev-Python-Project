@@ -3,7 +3,6 @@ import pygame
 from tile import Tile
 from parameters import tileDim, scr_width, scr_height
 from player import Player
-from target import Target
 #imports
 
 
