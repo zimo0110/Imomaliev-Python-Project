@@ -1,4 +1,5 @@
-#level one map, represented with letters as it is easier to visualise letters rather than 1's and 0's
+#level one map, represented with letters as it is 
+#easier to visualise letters rather than 1's and 0's
 levOne_map = [
 '                                  ',
 '                                  ',

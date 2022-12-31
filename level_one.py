@@ -40,11 +40,7 @@ class Level:
 
                     player = Player((x,y))
                     self.player.add(player)
-
-                elif cell == 'T':
-                    target = Target((x,y),tileDim)
-                    self.target.add(target)
-                    
+           
 
     #camera of the game
     def scroll_x(self):
