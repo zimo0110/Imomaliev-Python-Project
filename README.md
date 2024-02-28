@@ -1,5 +1,8 @@
 # A-Level Computer Science Project
-this project was the first opportunity to build a larger project with complex and detailed documentation
+This project was the first opportunity to build a larger project with complex and detailed documentation
+
+# Quick Overview
+
 
 # Skills gained
 1. Python - Usage of many libraries, data structures, designing a project and heavy reliance on OOP
@@ -7,4 +10,5 @@ this project was the first opportunity to build a larger project with complex an
 3. Latex - my documentation was written and rendered using Latex
 
 # How to view
-1. Go to version -> 
+1. Go to version -> DandAStage.pdf
+   
