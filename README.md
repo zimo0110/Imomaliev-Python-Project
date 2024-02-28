@@ -2,6 +2,7 @@
 This project was the first opportunity to build a larger project with complex and detailed documentation
 
 # Quick Overview
+The goal of the game is to recreate 'Mario ' like game, which is light and easy to play. The game consists of multiple levels, with different difficulty and with engaging graphics.
 
 
 # Skills gained
